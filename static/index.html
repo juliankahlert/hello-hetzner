@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Dashboard</title>
+  <link rel="stylesheet" href="/hello?file=style.css">
+</head>
+<body>
+  <div class="noise"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo-mark"></div>
+      <h1>sys<span class="accent">/</span>dash</h1>
+    </div>
+    <div class="header-right">
+      <span class="status-pill" id="conn-status">
+        <span class="status-dot"></span>
+        <span class="status-text">connecting</span>
+      </span>
+      <time class="clock" id="clock">--:--:--</time>
+    </div>
+  </header>
+
+  <!-- Uptime bar -->
+  <div class="uptime-bar">
+    <span class="uptime-label">UPTIME</span>
+    <span class="uptime-value" id="uptime">---</span>
+    <span class="uptime-sep">|</span>
+    <span class="uptime-label">LOAD</span>
+    <span class="uptime-value" id="loadavg">---</span>
+    <span class="uptime-sep">|</span>
+    <span class="uptime-label">CPUs</span>
+    <span class="uptime-value" id="cpu-count">-</span>
+  </div>
+
+  <!-- Main grid -->
+  <main class="grid">
+
+    <!-- CPU Card -->
+    <section class="card card--cpu">
+      <div class="card-header">
+        <span class="card-tag">01</span>
+        <h2>CPU</h2>
+      </div>
+      <div class="card-body">
+        <div class="big-value">
+          <span id="cpu-pct" class="mono">0.0</span><span class="unit">%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill bar-fill--cpu" id="cpu-bar" style="width: 0%"></div>
+        </div>
+        <div class="sparkline-container">
+          <canvas id="cpu-spark" width="280" height="48"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Memory Card -->
+    <section class="card card--mem">
+      <div class="card-header">
+        <span class="card-tag">02</span>
+        <h2>MEMORY</h2>
+      </div>
+      <div class="card-body">
+        <div class="big-value">
+          <span id="mem-pct" class="mono">0.0</span><span class="unit">%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill bar-fill--mem" id="mem-bar" style="width: 0%"></div>
+        </div>
+        <div class="mem-detail">
+          <div class="detail-row">
+            <span class="detail-label">Used</span>
+            <span class="detail-value mono" id="mem-used">--</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Available</span>
+            <span class="detail-value mono" id="mem-avail">--</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Total</span>
+            <span class="detail-value mono" id="mem-total">--</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Disk Card -->
+    <section class="card card--disk">
+      <div class="card-header">
+        <span class="card-tag">03</span>
+        <h2>DISK</h2>
+      </div>
+      <div class="card-body">
+        <div class="big-value">
+          <span id="disk-pct" class="mono">0.0</span><span class="unit">%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill bar-fill--disk" id="disk-bar" style="width: 0%"></div>
+        </div>
+        <div class="mem-detail">
+          <div class="detail-row">
+            <span class="detail-label">Used</span>
+            <span class="detail-value mono" id="disk-used">--</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Free</span>
+            <span class="detail-value mono" id="disk-free">--</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Total</span>
+            <span class="detail-value mono" id="disk-total">--</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Network Card -->
+    <section class="card card--net">
+      <div class="card-header">
+        <span class="card-tag">04</span>
+        <h2>NETWORK</h2>
+      </div>
+      <div class="card-body card-body--net">
+        <div class="net-half">
+          <div class="net-direction">
+            <span class="net-arrow net-arrow--rx">&#9660;</span>
+            <span class="net-label">RX</span>
+          </div>
+          <div class="big-value big-value--sm">
+            <span id="net-rx" class="mono">0</span><span class="unit" id="net-rx-unit">B/s</span>
+          </div>
+          <div class="sparkline-container">
+            <canvas id="rx-spark" width="120" height="36"></canvas>
+          </div>
+        </div>
+        <div class="net-divider"></div>
+        <div class="net-half">
+          <div class="net-direction">
+            <span class="net-arrow net-arrow--tx">&#9650;</span>
+            <span class="net-label">TX</span>
+          </div>
+          <div class="big-value big-value--sm">
+            <span id="net-tx" class="mono">0</span><span class="unit" id="net-tx-unit">B/s</span>
+          </div>
+          <div class="sparkline-container">
+            <canvas id="tx-spark" width="120" height="36"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span>sys/dash &mdash; zero dependencies</span>
+    <span id="last-update">last update: --</span>
+  </footer>
+
+  <script src="/hello?file=app.js"></script>
+</body>
+</html>
