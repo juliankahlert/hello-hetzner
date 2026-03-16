@@ -27,6 +27,7 @@ jobs:
           user: hello-hetzner
           exec-start: "/usr/bin/python3 /opt/app/server.py"
         firewall_enabled: 'true'
+        certbot: 'true'
         haproxy_fragment: ./infra/haproxy-hello.cfg
         haproxy_fragment_name: hello
     - name: Log deploy outputs
