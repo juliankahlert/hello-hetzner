@@ -28,60 +28,11 @@ jobs:
           exec-start: "/usr/bin/python3 /opt/app/server.py"
         firewall_enabled: 'true'
         certbot: 'true'
-        haproxy_fragment: ./infra/haproxy-hello.cfg
-        haproxy_fragment_name: hello
+        host_port: 80
+        app_port: 4001
+        route: '/hello'
     - name: Log deploy outputs
       run: |
         echo "server_ip=${{ steps.deploy.outputs.server_ip }}"
         echo "server_id=${{ steps.deploy.outputs.server_id }}"
         echo "server_status=${{ steps.deploy.outputs.server_status }}"
-    - name: Check IPv6 reachability
-      id: ipv6_check
-      shell: bash
-      run: |
-        server_ipv6="${{ steps.deploy.outputs.server_ipv6 }}"
-        server_ip="${{ steps.deploy.outputs.server_ip }}"
-
-        if [[ -n "$server_ipv6" ]]; then
-          target_ipv6="$server_ipv6"
-          echo "Using deploy action server_ipv6 output: $target_ipv6"
-        elif [[ "$server_ip" == *:* ]]; then
-          target_ipv6="$server_ip"
-          echo "server_ipv6 output not set; using IPv6 detected in server_ip: $target_ipv6"
-        else
-          echo "No IPv6 address available from deploy outputs; skipping reachability check."
-          echo "ipv6_reachable=unknown" >> "$GITHUB_OUTPUT"
-          exit 0
-        fi
-
-        if command -v ping6 >/dev/null 2>&1; then
-          echo "Checking IPv6 reachability with ping6..."
-          if ping6 -c 1 -W 5 "$target_ipv6"; then
-            echo "IPv6 reachability check succeeded."
-            echo "ipv6_reachable=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "IPv6 reachability check failed."
-            echo "ipv6_reachable=false" >> "$GITHUB_OUTPUT"
-          fi
-        elif command -v ping >/dev/null 2>&1; then
-          echo "Checking IPv6 reachability with ping -6..."
-          if ping -6 -c 1 -W 5 "$target_ipv6"; then
-            echo "IPv6 reachability check succeeded."
-            echo "ipv6_reachable=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "IPv6 reachability check failed."
-            echo "ipv6_reachable=false" >> "$GITHUB_OUTPUT"
-          fi
-        elif command -v curl >/dev/null 2>&1; then
-          echo "Ping not available; checking IPv6 reachability with curl -6..."
-          if curl -6 --connect-timeout 5 --max-time 10 --fail --silent --show-error "http://[$target_ipv6]/" >/dev/null; then
-            echo "IPv6 reachability check succeeded."
-            echo "ipv6_reachable=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "IPv6 reachability check failed."
-            echo "ipv6_reachable=false" >> "$GITHUB_OUTPUT"
-          fi
-        else
-          echo "No IPv6 test tool available (ping6, ping, or curl); result unknown."
-          echo "ipv6_reachable=unknown" >> "$GITHUB_OUTPUT"
-        fi
