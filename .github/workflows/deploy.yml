@@ -30,7 +30,7 @@ jobs:
         certbot: 'true'
         host_port: 80
         app_port: 4001
-        route: '/hello'
+        route: '/hello{,/**}'
     - name: Log deploy outputs
       run: |
         echo "server_ip=${{ steps.deploy.outputs.server_ip }}"
