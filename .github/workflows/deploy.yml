@@ -28,6 +28,7 @@ jobs:
           exec-start: "/usr/bin/python3 /opt/app/server.py"
         firewall_enabled: 'true'
         certbot: 'true'
+        duckdns: "${{ secrets.DUCKDNS_TOKEN }}:${{ secrets.DUCKDNS_DOMAIN }}"
         host_port: 80
         app_port: 4001
         route: '/hello{,/**}'
